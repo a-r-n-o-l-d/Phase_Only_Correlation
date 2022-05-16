@@ -3,8 +3,65 @@
  */
 package Phase_Only_Correlation;
 
-public class Phase_Only_Correlation {
-    public boolean someLibraryMethod() {
+import correlation.PhaseCorrelator2D;
+import correlation.WindowType;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.WindowManager;
+import ij.gui.GenericDialog;
+import ij.gui.Roi;
+import ij.plugin.PlugIn;
+
+public class Phase_Only_Correlation implements PlugIn
+{
+    private ImagePlus img1, img2;
+
+    private boolean display;
+
+    private WindowType type;
+
+    @Override
+    public void run(String string)
+    {
+        if (!doDialog())
+        {
+            return;
+        }
+        final Roi roi1 = img1.getRoi();
+        img1.setRoi(0, 0, img1.getWidth(), img1.getHeight());
+        final Roi roi2 = img2.getRoi();
+        img2.setRoi(0, 0, img2.getWidth(), img2.getHeight());
+        final PhaseCorrelator2D co = new PhaseCorrelator2D(img1, img2, type);
+        img1.setRoi(roi1);
+        img2.setRoi(roi2);
+        final ImagePlus img = co.correlate();
+        if (display)
+        {
+            img.show();
+        }
+        double[] t = co.getTranslation();
+        IJ.log("" + t[0] + " " + t[1] + " " + t[2]);
+    }
+
+    private boolean doDialog()
+    {
+        final String[] images = WindowManager.getImageTitles();
+        final GenericDialog gd = new GenericDialog("Phase Correlation", IJ.getInstance());
+        gd.addChoice("Image_1", images, images[0]);
+        gd.addChoice("Image_2", images, images[0]);
+        gd.addChoice("Window_type", WindowType.NAMES, WindowType.NAMES[0]);
+        gd.addCheckbox("Display_correlation", true);
+        gd.showDialog();
+        if (gd.wasCanceled())
+        {
+            return false;
+        }
+        img1 = WindowManager.getImage(gd.getNextChoice());
+        img2 = WindowManager.getImage(gd.getNextChoice());
+        type = WindowType.valueOf(gd.getNextChoice());
+        display = gd.getNextBoolean();
+
         return true;
+
     }
 }
