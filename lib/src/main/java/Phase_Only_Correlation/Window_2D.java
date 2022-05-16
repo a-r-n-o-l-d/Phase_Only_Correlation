@@ -1,6 +1,5 @@
 package Phase_Only_Correlation;
 
-
 import correlation.Window;
 import correlation.WindowType;
 import ij.IJ;
@@ -37,6 +36,7 @@ public class Window_2D implements PlugIn
         final Window win = new Window(width, height, type);
         IJ.run(img1, "32-bit", "");
         win.apodize((FloatProcessor) img1.getProcessor());
+        img1.updateAndDraw();
     }
 
     private boolean doDialog()

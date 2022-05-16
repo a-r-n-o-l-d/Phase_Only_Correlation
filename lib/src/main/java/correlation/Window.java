@@ -76,6 +76,7 @@ public class Window
                         {
                             final float v = img.getf(x, y) * getCoefficient(x, y);
                             img.setf(x, y, v);
+                            //IJ.log("" + v);
                         }
                     }
                 }
