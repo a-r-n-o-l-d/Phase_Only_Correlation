@@ -8,5 +8,5 @@ registration.
 
 ## Installation
 
-Download the [plugin](https://github.com/a-r-n-o-l-d/Phase_Only_Correlation/tree/master/lib/build/libs/Phase_Only_Correlation-0.1.0.jar),
- and put it in the plugins folder of ImageJ.
+Download the [plugin](https://github.com/a-r-n-o-l-d/Phase_Only_Correlation/tree/master/lib/build/libs), and put it in
+the plugins folder of ImageJ.
